@@ -1,0 +1,143 @@
+database schema for a microblogging app using MongoDB. In MongoDB, you organize data into collections instead of tables. Each collection contains documents in BSON (Binary JSON) format.
+
+•	Users Collection:
+db.createCollection("users", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["username", "email", "password"],
+         properties: {
+            username: {
+               bsonType: "string",
+               description: "Username of the user"
+            },
+            email: {
+               bsonType: "string",
+               description: "Email address of the user"
+            },
+            password: {
+               bsonType: "string",
+               description: "Hashed password of the user"
+            },
+            bio: {
+               bsonType: "string",
+               description: "User's biography"
+            },
+            profile_picture: {
+               bsonType: "string",
+               description: "URL of user's profile picture"
+            }
+         }
+      }
+   }
+})
+
+•	Posts Collection:
+
+db.createCollection("posts", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["user_id", "content"],
+         properties: {
+            user_id: {
+               bsonType: "objectId",
+               description: "User ID of the post creator"
+            },
+            content: {
+               bsonType: "string",
+               description: "Content of the post"
+            },
+            created_at: {
+               bsonType: "date",
+               description: "Date when the post was created"
+            },
+            updated_at: {
+               bsonType: "date",
+               description: "Date when the post was last updated"
+            }
+         }
+      }
+   }
+})
+
+•	Comments Collection:
+
+db.createCollection("comments", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["user_id", "post_id", "content"],
+         properties: {
+            user_id: {
+               bsonType: "objectId",
+               description: "User ID of the commenter"
+            },
+            post_id: {
+               bsonType: "objectId",
+               description: "Post ID of the commented post"
+            },
+            content: {
+               bsonType: "string",
+               description: "Content of the comment"
+            },
+            created_at: {
+               bsonType: "date",
+               description: "Date when the comment was created"
+            }
+         }
+      }
+   }
+})
+
+•	Likes Collection:
+
+db.createCollection("likes", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["user_id", "post_id"],
+         properties: {
+            user_id: {
+               bsonType: "objectId",
+               description: "User ID of the user who liked the post"
+            },
+            post_id: {
+               bsonType: "objectId",
+               description: "Post ID of the liked post"
+            },
+            created_at: {
+               bsonType: "date",
+               description: "Date when the like was created"
+            }
+         }
+      }
+   }
+})
+
+•	Followers Collection:
+
+db.createCollection("followers", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["follower_id", "following_id"],
+         properties: {
+            follower_id: {
+               bsonType: "objectId",
+               description: "User ID of the follower"
+            },
+            following_id: {
+               bsonType: "objectId",
+               description: "User ID of the user being followed"
+            },
+            created_at: {
+               bsonType: "date",
+               description: "Date when the follow relationship was established"
+            }
+         }
+      }
+   }
+})
+
+
